@@ -11,7 +11,16 @@ TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnTimelineTab(const FSpawnTabArg
 
 TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnDetailsTab(const FSpawnTabArgs& SpawnTabArgs)
 {
-	return SNew(SDockTab);
+	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	FDetailsViewArgs DetailsViewArgs;
+	DetailsViewArgs.NameAreaSettings = FDetailsViewArgs::HideNameArea;
+	TSharedRef<IDetailsView> DetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
+	DetailsView->SetObjects(TArray<UObject*>{ SoundMap });
+	
+	return SNew(SDockTab)
+	[
+		DetailsView
+	];
 }
 
 void FSoundMapEditorToolkit::InitSoundMapEditor(const EToolkitMode::Type Mode,
