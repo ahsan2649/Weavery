@@ -1,0 +1,868 @@
+{
+	"folders": [
+		{
+			"name": "Weavery",
+			"path": "."
+		},
+		{
+			"name": "UE5",
+			"path": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+		}
+	],
+	"settings": {
+		"typescript.tsc.autoDetect": "off",
+		"npm.autoDetect": "off"
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.cpptools",
+			"ms-dotnettools.csharp",
+			"vadimcn.vscode-lldb",
+			"ms-vscode.mono-debug",
+			"dfarley1.file-picker"
+		]
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "Weavery Linux Debug Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"Debug",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux Debug Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"Debug",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"Weavery Linux Debug Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux Debug Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"Debug",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux DebugGame Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"DebugGame",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux DebugGame Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"DebugGame",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"Weavery Linux DebugGame Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux DebugGame Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"DebugGame",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux Development Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"Development",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux Development Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"Development",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"Weavery Linux Development Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux Development Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"Development",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux Test Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"Test",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux Test Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"Test",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"Weavery Linux Test Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux Test Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"Test",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux Shipping Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"Shipping",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux Shipping Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"Shipping",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"Weavery Linux Shipping Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery Linux Shipping Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"Linux",
+					"Shipping",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 Debug Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"Debug",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 Debug Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"Debug",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"Weavery LinuxArm64 Debug Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 Debug Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"Debug",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 DebugGame Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"DebugGame",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 DebugGame Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"DebugGame",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"Weavery LinuxArm64 DebugGame Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 DebugGame Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"DebugGame",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 Development Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"Development",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 Development Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"Development",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"Weavery LinuxArm64 Development Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 Development Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"Development",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 Test Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"Test",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 Test Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"Test",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"Weavery LinuxArm64 Test Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 Test Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"Test",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 Shipping Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"Shipping",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 Shipping Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"Shipping",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"Weavery LinuxArm64 Shipping Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "Weavery LinuxArm64 Shipping Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"Weavery",
+					"LinuxArm64",
+					"Shipping",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "WeaveryEditor Linux Debug Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"WeaveryEditor",
+					"Linux",
+					"Debug",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "WeaveryEditor Linux Debug Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"WeaveryEditor",
+					"Linux",
+					"Debug",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"WeaveryEditor Linux Debug Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "WeaveryEditor Linux Debug Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"WeaveryEditor",
+					"Linux",
+					"Debug",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "WeaveryEditor Linux DebugGame Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"WeaveryEditor",
+					"Linux",
+					"DebugGame",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "WeaveryEditor Linux DebugGame Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"WeaveryEditor",
+					"Linux",
+					"DebugGame",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"WeaveryEditor Linux DebugGame Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "WeaveryEditor Linux DebugGame Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"WeaveryEditor",
+					"Linux",
+					"DebugGame",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "WeaveryEditor Linux Development Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"WeaveryEditor",
+					"Linux",
+					"Development",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "WeaveryEditor Linux Development Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"WeaveryEditor",
+					"Linux",
+					"Development",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"WeaveryEditor Linux Development Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			},
+			{
+				"label": "WeaveryEditor Linux Development Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Linux/Build.sh",
+				"args": [
+					"WeaveryEditor",
+					"Linux",
+					"Development",
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+				}
+			}
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Launch Weavery (Debug)",
+				"request": "launch",
+				"program": "/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Binaries/Linux/UnrealGame-Linux-Debug",
+				"preLaunchTask": "Weavery Linux Debug Build",
+				"args": [
+				],
+				"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2",
+				"type": "cppdbg",
+				"visualizerFile": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2/Engine/Extras/VisualStudioDebugging/Unreal.natvis",
+				"showDisplayString": true
+			},
+			{
+				"name": "Launch Weavery (DebugGame)",
+				"request": "launch",
+				"program": "/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Binaries/Linux/UnrealGame-Linux-DebugGame",
+				"preLaunchTask": "Weavery Linux DebugGame Build",
+				"args": [
+				],
+				"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2",
+				"type": "cppdbg",
+				"visualizerFile": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2/Engine/Extras/VisualStudioDebugging/Unreal.natvis",
+				"showDisplayString": true
+			},
+			{
+				"name": "Launch Weavery (Development)",
+				"request": "launch",
+				"program": "/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Binaries/Linux/UnrealGame",
+				"preLaunchTask": "Weavery Linux Development Build",
+				"args": [
+				],
+				"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2",
+				"type": "cppdbg",
+				"visualizerFile": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2/Engine/Extras/VisualStudioDebugging/Unreal.natvis",
+				"showDisplayString": true
+			},
+			{
+				"name": "Launch Weavery (Test)",
+				"request": "launch",
+				"program": "/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Binaries/Linux/UnrealGame-Linux-Test",
+				"preLaunchTask": "Weavery Linux Test Build",
+				"args": [
+				],
+				"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2",
+				"type": "cppdbg",
+				"visualizerFile": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2/Engine/Extras/VisualStudioDebugging/Unreal.natvis",
+				"showDisplayString": true
+			},
+			{
+				"name": "Launch Weavery (Shipping)",
+				"request": "launch",
+				"program": "/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Binaries/Linux/UnrealGame-Linux-Shipping",
+				"preLaunchTask": "Weavery Linux Shipping Build",
+				"args": [
+				],
+				"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2",
+				"type": "cppdbg",
+				"visualizerFile": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2/Engine/Extras/VisualStudioDebugging/Unreal.natvis",
+				"showDisplayString": true
+			},
+			{
+				"name": "Launch WeaveryEditor (Debug)",
+				"request": "launch",
+				"program": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2/Engine/Binaries/Linux/UnrealEditor-Linux-Debug",
+				"preLaunchTask": "WeaveryEditor Linux Debug Build",
+				"args": [
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject"
+				],
+				"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2",
+				"type": "cppdbg",
+				"visualizerFile": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2/Engine/Extras/VisualStudioDebugging/Unreal.natvis",
+				"showDisplayString": true
+			},
+			{
+				"name": "Launch WeaveryEditor (DebugGame)",
+				"request": "launch",
+				"program": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2/Engine/Binaries/Linux/UnrealEditor-Linux-DebugGame",
+				"preLaunchTask": "WeaveryEditor Linux DebugGame Build",
+				"args": [
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject"
+				],
+				"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2",
+				"type": "cppdbg",
+				"visualizerFile": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2/Engine/Extras/VisualStudioDebugging/Unreal.natvis",
+				"showDisplayString": true
+			},
+			{
+				"name": "Launch WeaveryEditor (Development)",
+				"request": "launch",
+				"program": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2/Engine/Binaries/Linux/UnrealEditor",
+				"preLaunchTask": "WeaveryEditor Linux Development Build",
+				"args": [
+					"/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject"
+				],
+				"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2",
+				"type": "cppdbg",
+				"visualizerFile": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2/Engine/Extras/VisualStudioDebugging/Unreal.natvis",
+				"showDisplayString": true
+			},
+			{
+				"name": "Generate Project Files",
+				"type": "coreclr",
+				"request": "launch",
+				"preLaunchTask": "UnrealBuildTool Linux Development Build",
+				"program": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2/Engine/Build/BatchFiles/RunUBT.bat",
+				"args": [
+					"-projectfiles",
+					"-vscode",
+					"-project=/home/ahsan2649/Dokumente/Unreal Projects/Weavery/Weavery.uproject",
+					"-game",
+					"-engine",
+					"-dotnet"
+				],
+				"console": "internalConsole",
+				"internalConsoleOptions": "openOnSessionStart",
+				"stopAtEntry": false,
+				"cwd": "/home/ahsan2649/Unreal Engine/Unreal Engine 5.3.2"
+			}
+		]
+	}
+}
