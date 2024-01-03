@@ -3,20 +3,27 @@
 
 #include "FSoundMapEditorToolkit.h"
 #include "SoundMapAsset.h"
+#include "STimelineWidget.h"
 
 TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnTimelineTab(const FSpawnTabArgs& SpawnTabArgs)
 {
-	return SNew(SDockTab);
+	return SNew(SDockTab)
+	[
+		SAssignNew(TimelineWidget, STimelineWidget)
+		.SoundMap(this, &FSoundMapEditorToolkit::GetSoundMap)
+		.SoundWave(this, &FSoundMapEditorToolkit::GetSoundWave)
+	];
 }
 
 TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnDetailsTab(const FSpawnTabArgs& SpawnTabArgs)
 {
-	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>(
+		"PropertyEditor");
 	FDetailsViewArgs DetailsViewArgs;
 	DetailsViewArgs.NameAreaSettings = FDetailsViewArgs::HideNameArea;
 	TSharedRef<IDetailsView> DetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
-	DetailsView->SetObjects(TArray<UObject*>{ SoundMap });
-	
+	DetailsView->SetObjects(TArray<UObject*>{SoundMap});
+
 	return SNew(SDockTab)
 	[
 		DetailsView
@@ -98,4 +105,14 @@ FString FSoundMapEditorToolkit::GetWorldCentricTabPrefix() const
 FLinearColor FSoundMapEditorToolkit::GetWorldCentricTabColorScale() const
 {
 	return FLinearColor::Blue;
+}
+
+USoundMapAsset* FSoundMapEditorToolkit::GetSoundMap() const
+{
+	return SoundMap;
+}
+
+USoundWave* FSoundMapEditorToolkit::GetSoundWave() const
+{
+	return SoundMap->SoundWave;
 }

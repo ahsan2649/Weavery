@@ -20,7 +20,7 @@ UCLASS()
 class SOUNDMAP_API USoundMapAsset : public UObject
 {
 	GENERATED_BODY()
-
+public:
 	UPROPERTY(EditAnywhere)
 	USoundWave* SoundWave;
 
