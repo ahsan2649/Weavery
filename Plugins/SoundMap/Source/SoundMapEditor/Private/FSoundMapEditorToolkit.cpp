@@ -35,7 +35,7 @@ void FSoundMapEditorToolkit::InitSoundMapEditor(const EToolkitMode::Type Mode,
                                                 USoundMapAsset* InSoundMapAsset)
 {
 	SoundMap = InSoundMapAsset;
-
+	
 	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("StandaloneDefault")
 		->AddArea(
 			FTabManager::NewPrimaryArea()

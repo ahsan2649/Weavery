@@ -26,4 +26,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	TArray<FRail> Rails;
+
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+
 };

@@ -23,6 +23,8 @@ public:
 
 	USoundMapAsset* GetSoundMap() const;
 	USoundWave* GetSoundWave() const;
+
+	
 private:
 	USoundMapAsset* SoundMap = nullptr;
 	
