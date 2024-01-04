@@ -14,29 +14,65 @@
 #define LOCTEXT_NAMESPACE "SoundMapEditorCommands"
 
 
-TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnTimelineTab(const FSpawnTabArgs& SpawnTabArgs)
+void FSoundMapEditorToolkit::InitSoundMapEditor(const EToolkitMode::Type Mode,
+												const TSharedPtr<IToolkitHost>& InitToolkitHost,
+												USoundMapAsset* InSoundMapAsset)
 {
-	return SNew(SDockTab)
-	[
-		SAssignNew(TimelineWidget, STimelineWidget)
-		.SoundMap(this, &FSoundMapEditorToolkit::GetSoundMap)
-		.SoundWave(this, &FSoundMapEditorToolkit::GetSoundWave)
-	];
+	SoundMap = InSoundMapAsset;
+	SoundMap->OnSoundWaveSet.BindSP(this, &FSoundMapEditorToolkit::OnSoundWaveSet);
+	SoundMap->OnSoundWaveCleared.BindSP(this, &FSoundMapEditorToolkit::OnSoundWaveCleared);
+
+	RegisterToolbar();
+
+	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("StandaloneDefault")
+		->AddArea(
+			FTabManager::NewPrimaryArea()
+			->SetOrientation(Orient_Horizontal)
+			->Split(
+				FTabManager::NewStack()
+				->SetHideTabWell(false)
+				->AddTab(FName("Details"), ETabState::OpenedTab
+				))
+			->Split(
+				FTabManager::NewStack()
+				->SetHideTabWell(false)
+				->AddTab(FName("Timeline"), ETabState::OpenedTab)
+			)
+		);
+
+	InitAssetEditor(
+		Mode,
+		InitToolkitHost,
+		FName("SoundMapEditorAppIdentifier"),
+		StandaloneDefaultLayout,
+		true,
+		true,
+		InSoundMapAsset
+	);
 }
 
-TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnDetailsTab(const FSpawnTabArgs& SpawnTabArgs) const
+void FSoundMapEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
 {
-	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>(
-		"PropertyEditor");
-	FDetailsViewArgs DetailsViewArgs;
-	DetailsViewArgs.NameAreaSettings = FDetailsViewArgs::HideNameArea;
-	const TSharedRef<IDetailsView> DetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
-	DetailsView->SetObjects(TArray<UObject*>{SoundMap});
+	WorkspaceMenuCategory = InTabManager->AddLocalWorkspaceMenuCategory(INVTEXT("SoundMap Editor"));
+	const TSharedRef<FWorkspaceItem> WorkspaceMenuCategoryRef = WorkspaceMenuCategory.ToSharedRef();
+	FAssetEditorToolkit::RegisterTabSpawners(InTabManager);
 
-	return SNew(SDockTab)
-	[
-		DetailsView
-	];
+	InTabManager->RegisterTabSpawner(FName("Details"),
+									 FOnSpawnTab::CreateSP(this, &FSoundMapEditorToolkit::SpawnDetailsTab))
+				.SetGroup(WorkspaceMenuCategoryRef)
+				.SetDisplayName(INVTEXT("Details"));
+
+	InTabManager->RegisterTabSpawner(FName("Timeline"),
+									 FOnSpawnTab::CreateSP(this, &FSoundMapEditorToolkit::SpawnTimelineTab))
+				.SetGroup(WorkspaceMenuCategoryRef)
+				.SetDisplayName(INVTEXT("Timeline"));
+}
+
+void FSoundMapEditorToolkit::UnregisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
+{
+	InTabManager->UnregisterTabSpawner(FName("Details"));
+	InTabManager->UnregisterTabSpawner(FName("Timeline"));
+	FAssetEditorToolkit::UnregisterTabSpawners(InTabManager);
 }
 
 void FSoundMapEditorToolkit::RegisterToolbar()
@@ -47,7 +83,7 @@ void FSoundMapEditorToolkit::RegisterToolbar()
 	if (!UToolMenus::Get()->IsMenuRegistered(MenuName))
 	{
 		UToolMenu* ToolBar = UToolMenus::Get()->RegisterMenu(MenuName, "AssetEditor.DefaultToolBar",
-		                                                     EMultiBoxType::ToolBar);
+															 EMultiBoxType::ToolBar);
 
 		if (ToolBar == nullptr)
 		{
@@ -56,7 +92,7 @@ void FSoundMapEditorToolkit::RegisterToolbar()
 
 		FToolMenuInsert InsertAfterAssetSection("Asset", EToolMenuInsertType::After);
 		FToolMenuSection& PlayBackSection = ToolBar->AddSection("Transport Controls", TAttribute<FText>(),
-		                                                        InsertAfterAssetSection);
+																InsertAfterAssetSection);
 
 		FToolMenuEntry PlayEntry = FToolMenuEntry::InitToolBarButton(
 			Commands.PlaySoundWave,
@@ -90,6 +126,34 @@ void FSoundMapEditorToolkit::RegisterToolbar()
 		PlayBackSection.AddEntry(StopEntry);
 	}
 }
+
+
+TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnTimelineTab(const FSpawnTabArgs& SpawnTabArgs)
+{
+	return SNew(SDockTab)
+	[
+		SAssignNew(TimelineWidget, STimelineWidget)
+		.SoundMap(this, &FSoundMapEditorToolkit::GetSoundMap)
+		.SoundWave(this, &FSoundMapEditorToolkit::GetSoundWave)
+	];
+}
+
+TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnDetailsTab(const FSpawnTabArgs& SpawnTabArgs) const
+{
+	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>(
+		"PropertyEditor");
+	FDetailsViewArgs DetailsViewArgs;
+	DetailsViewArgs.NameAreaSettings = FDetailsViewArgs::HideNameArea;
+	const TSharedRef<IDetailsView> DetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
+	DetailsView->SetObjects(TArray<UObject*>{SoundMap});
+
+	return SNew(SDockTab)
+	[
+		DetailsView
+	];
+}
+
+
 
 bool FSoundMapEditorToolkit::CanPressPlayButton() const
 {
@@ -174,66 +238,7 @@ void FSoundMapEditorToolkit::OnSoundWaveCleared()
 	DestroyAudioComponent();
 }
 
-void FSoundMapEditorToolkit::InitSoundMapEditor(const EToolkitMode::Type Mode,
-                                                const TSharedPtr<IToolkitHost>& InitToolkitHost,
-                                                USoundMapAsset* InSoundMapAsset)
-{
-	SoundMap = InSoundMapAsset;
-	SoundMap->OnSoundWaveSet.BindSP(this, &FSoundMapEditorToolkit::OnSoundWaveSet);
-	SoundMap->OnSoundWaveCleared.BindSP(this, &FSoundMapEditorToolkit::OnSoundWaveCleared);
 
-	RegisterToolbar();
-
-	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("StandaloneDefault")
-		->AddArea(
-			FTabManager::NewPrimaryArea()
-			->SetOrientation(Orient_Horizontal)
-			->Split(
-				FTabManager::NewStack()
-				->SetHideTabWell(false)
-				->AddTab(FName("Details"), ETabState::OpenedTab
-				))
-			->Split(
-				FTabManager::NewStack()
-				->SetHideTabWell(false)
-				->AddTab(FName("Timeline"), ETabState::OpenedTab)
-			)
-		);
-
-	InitAssetEditor(
-		Mode,
-		InitToolkitHost,
-		FName("SoundMapEditorAppIdentifier"),
-		StandaloneDefaultLayout,
-		true,
-		true,
-		InSoundMapAsset
-	);
-}
-
-void FSoundMapEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
-{
-	WorkspaceMenuCategory = InTabManager->AddLocalWorkspaceMenuCategory(INVTEXT("SoundMap Editor"));
-	const TSharedRef<FWorkspaceItem> WorkspaceMenuCategoryRef = WorkspaceMenuCategory.ToSharedRef();
-	FAssetEditorToolkit::RegisterTabSpawners(InTabManager);
-
-	InTabManager->RegisterTabSpawner(FName("Details"),
-	                                 FOnSpawnTab::CreateSP(this, &FSoundMapEditorToolkit::SpawnDetailsTab))
-	            .SetGroup(WorkspaceMenuCategoryRef)
-	            .SetDisplayName(INVTEXT("Details"));
-
-	InTabManager->RegisterTabSpawner(FName("Timeline"),
-	                                 FOnSpawnTab::CreateSP(this, &FSoundMapEditorToolkit::SpawnTimelineTab))
-	            .SetGroup(WorkspaceMenuCategoryRef)
-	            .SetDisplayName(INVTEXT("Timeline"));
-}
-
-void FSoundMapEditorToolkit::UnregisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
-{
-	InTabManager->UnregisterTabSpawner(FName("Details"));
-	InTabManager->UnregisterTabSpawner(FName("Timeline"));
-	FAssetEditorToolkit::UnregisterTabSpawners(InTabManager);
-}
 
 FName FSoundMapEditorToolkit::GetToolkitFName() const
 {
