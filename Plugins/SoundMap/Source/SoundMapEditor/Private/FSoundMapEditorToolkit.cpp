@@ -6,7 +6,13 @@
 #include "AudioDevice.h"
 #include "AudioDeviceManager.h"
 #include "SoundMapAsset.h"
+#include "SoundMapEditorCommands.h"
+#include "ToolMenus.h"
+#include "Styling/AppStyle.h"
 #include "STimelineWidget.h"
+
+#define LOCTEXT_NAMESPACE "SoundMapEditorCommands"
+
 
 TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnTimelineTab(const FSpawnTabArgs& SpawnTabArgs)
 {
@@ -18,13 +24,13 @@ TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnTimelineTab(const FSpawnTabArg
 	];
 }
 
-TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnDetailsTab(const FSpawnTabArgs& SpawnTabArgs)
+TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnDetailsTab(const FSpawnTabArgs& SpawnTabArgs) const
 {
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>(
 		"PropertyEditor");
 	FDetailsViewArgs DetailsViewArgs;
 	DetailsViewArgs.NameAreaSettings = FDetailsViewArgs::HideNameArea;
-	TSharedRef<IDetailsView> DetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
+	const TSharedRef<IDetailsView> DetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
 	DetailsView->SetObjects(TArray<UObject*>{SoundMap});
 
 	return SNew(SDockTab)
@@ -33,13 +39,106 @@ TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnDetailsTab(const FSpawnTabArgs
 	];
 }
 
+void FSoundMapEditorToolkit::RegisterToolbar()
+{
+	const FSoundMapEditorCommands& Commands = FSoundMapEditorCommands::Get();
+	const FName MenuName = FAssetEditorToolkit::GetToolMenuToolbarName();
+
+	if (!UToolMenus::Get()->IsMenuRegistered(MenuName))
+	{
+		UToolMenu* ToolBar = UToolMenus::Get()->RegisterMenu(MenuName, "AssetEditor.DefaultToolBar",
+		                                                     EMultiBoxType::ToolBar);
+
+		if (ToolBar == nullptr)
+		{
+			return;
+		}
+
+		FToolMenuInsert InsertAfterAssetSection("Asset", EToolMenuInsertType::After);
+		FToolMenuSection& PlayBackSection = ToolBar->AddSection("Transport Controls", TAttribute<FText>(),
+		                                                        InsertAfterAssetSection);
+
+		FToolMenuEntry PlayEntry = FToolMenuEntry::InitToolBarButton(
+			Commands.PlaySoundWave,
+			LOCTEXT("SoundMapEditorPlayButton", ""),
+			LOCTEXT("SoundMapEditorPlayButtonTooltip", "Plays this SoundWave"),
+			FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlayWorld.PlayInViewport")
+		);
+
+		PlayEntry.StyleNameOverride = FName("Toolbar.BackplateLeftPlay");
+
+		FToolMenuEntry PauseEntry = FToolMenuEntry::InitToolBarButton(
+			Commands.PauseSoundWave,
+			LOCTEXT("SoundMapEditorPauseButton", ""),
+			LOCTEXT("SoundMapEditorPauseButtonTooltip", "Pauses this SoundWave"),
+			FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlayWorld.PausePlaySession.Small")
+		);
+
+		PauseEntry.StyleNameOverride = FName("Toolbar.BackplateCenter");
+
+		FToolMenuEntry StopEntry = FToolMenuEntry::InitToolBarButton(
+			Commands.StopSoundWave,
+			LOCTEXT("SoundMapEditorStopButton", ""),
+			LOCTEXT("SoundMapEditorStopButtonTooltip", "Stops this SoundWave"),
+			FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlayWorld.StopPlaySession.Small")
+		);
+
+		StopEntry.StyleNameOverride = FName("Toolbar.BackplateRight");
+
+		PlayBackSection.AddEntry(PlayEntry);
+		PlayBackSection.AddEntry(PauseEntry);
+		PlayBackSection.AddEntry(StopEntry);
+	}
+}
+
+bool FSoundMapEditorToolkit::CanPressPlayButton() const
+{
+	if (TransportController.Get() == nullptr) { return false; }
+	return TransportController->CanPlay() && (TransportController->IsPaused() || !TransportController->IsPlaying());
+}
+
+void FSoundMapEditorToolkit::BindCommands()
+{
+	const FSoundMapEditorCommands& Commands = FSoundMapEditorCommands::Get();
+
+	ToolkitCommands->MapAction(
+		Commands.PlaySoundWave,
+		FExecuteAction::CreateSP(TransportController.ToSharedRef(), &FSoundMapTransportController::Play),
+		FCanExecuteAction::CreateSP(this, &FSoundMapEditorToolkit::CanPressPlayButton));
+
+	ToolkitCommands->MapAction(
+		Commands.StopSoundWave,
+		FExecuteAction::CreateSP(TransportController.ToSharedRef(), &FSoundMapTransportController::Stop),
+		FCanExecuteAction::CreateSP(TransportController.ToSharedRef(), &FSoundMapTransportController::CanStop));
+
+	ToolkitCommands->MapAction(
+		Commands.TogglePlayback,
+		FExecuteAction::CreateSP(TransportController.ToSharedRef(), &FSoundMapTransportController::TogglePlayback)
+	);
+
+	ToolkitCommands->MapAction(
+		Commands.PauseSoundWave,
+		FExecuteAction::CreateSP(TransportController.ToSharedRef(), &FSoundMapTransportController::Pause),
+		FCanExecuteAction::CreateSP(TransportController.ToSharedRef(), &FSoundMapTransportController::IsPlaying)
+	);
+}
+
+void FSoundMapEditorToolkit::UnbindCommands() const
+{
+	const FSoundMapEditorCommands& Commands = FSoundMapEditorCommands::Get();
+	ToolkitCommands->UnmapAction(Commands.PlaySoundWave);
+	ToolkitCommands->UnmapAction(Commands.PauseSoundWave);
+	ToolkitCommands->UnmapAction(Commands.StopSoundWave);
+	ToolkitCommands->UnmapAction(Commands.TogglePlayback);
+}
+
 void FSoundMapEditorToolkit::InitializeAudioComponent()
 {
 	if (AudioComponent == nullptr)
 	{
-		if (FAudioDeviceManager* AudioDeviceManager = FAudioDeviceManager::Get())
+		if (const FAudioDeviceManager* AudioDeviceManager = FAudioDeviceManager::Get())
 		{
-			if (FAudioDevice* AudioDevice = AudioDeviceManager->GetMainAudioDeviceRaw())
+			if (AudioDeviceManager->GetMainAudioDeviceRaw())
 			{
 				USoundBase* SoundBase = Cast<USoundBase>(SoundMap->SoundWave);
 				AudioComponent = FAudioDevice::CreateComponent(SoundBase);
@@ -59,7 +158,7 @@ void FSoundMapEditorToolkit::OnSoundWaveSet()
 {
 	InitializeAudioComponent();
 	TransportController = MakeShared<FSoundMapTransportController>(AudioComponent);
-	TransportController->Play();
+	BindCommands();
 }
 
 void FSoundMapEditorToolkit::DestroyAudioComponent()
@@ -70,9 +169,9 @@ void FSoundMapEditorToolkit::DestroyAudioComponent()
 
 void FSoundMapEditorToolkit::OnSoundWaveCleared()
 {
-	TransportController->Stop();
-	DestroyAudioComponent();
+	UnbindCommands();
 	TransportController.Reset();
+	DestroyAudioComponent();
 }
 
 void FSoundMapEditorToolkit::InitSoundMapEditor(const EToolkitMode::Type Mode,
@@ -82,7 +181,9 @@ void FSoundMapEditorToolkit::InitSoundMapEditor(const EToolkitMode::Type Mode,
 	SoundMap = InSoundMapAsset;
 	SoundMap->OnSoundWaveSet.BindSP(this, &FSoundMapEditorToolkit::OnSoundWaveSet);
 	SoundMap->OnSoundWaveCleared.BindSP(this, &FSoundMapEditorToolkit::OnSoundWaveCleared);
-	
+
+	RegisterToolbar();
+
 	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("StandaloneDefault")
 		->AddArea(
 			FTabManager::NewPrimaryArea()
@@ -113,7 +214,7 @@ void FSoundMapEditorToolkit::InitSoundMapEditor(const EToolkitMode::Type Mode,
 void FSoundMapEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
 {
 	WorkspaceMenuCategory = InTabManager->AddLocalWorkspaceMenuCategory(INVTEXT("SoundMap Editor"));
-	TSharedRef<FWorkspaceItem> WorkspaceMenuCategoryRef = WorkspaceMenuCategory.ToSharedRef();
+	const TSharedRef<FWorkspaceItem> WorkspaceMenuCategoryRef = WorkspaceMenuCategory.ToSharedRef();
 	FAssetEditorToolkit::RegisterTabSpawners(InTabManager);
 
 	InTabManager->RegisterTabSpawner(FName("Details"),
@@ -163,3 +264,5 @@ USoundWave* FSoundMapEditorToolkit::GetSoundWave() const
 {
 	return SoundMap->SoundWave;
 }
+
+#undef LOCTEXT_NAMESPACE

@@ -4,6 +4,7 @@
 #include "FAssetTypeActions_SoundMap.h"
 #include "FSoundMapEditorToolkit.h"
 #include "IAssetTools.h"
+#include "SoundMapEditorCommands.h"
 
 #define LOCTEXT_NAMESPACE "FSoundMapEditorModule"
 
@@ -11,6 +12,8 @@ void FSoundMapEditorModule::StartupModule()
 {
     IModuleInterface::StartupModule();
 
+    FSoundMapEditorCommands::Register();
+    
     IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
     AssetTypeCategory = AssetTools.RegisterAdvancedAssetCategory("SoundMap Plugin", INVTEXT("SoundMap Plugin"));
 
@@ -24,7 +27,8 @@ void FSoundMapEditorModule::StartupModule()
 void FSoundMapEditorModule::ShutdownModule()
 {
     IModuleInterface::ShutdownModule();
-
+    FSoundMapEditorCommands::Unregister();
+    
     if (FModuleManager::Get().IsModuleLoaded("AssetTools"))
     {
         IAssetTools& AssetTools = FModuleManager::GetModuleChecked<FAssetToolsModule>("AssetTools").Get();

@@ -13,9 +13,6 @@ class USoundMapAsset;
 class SOUNDMAPEDITOR_API FSoundMapEditorToolkit : public FAssetEditorToolkit
 {
 public:
-	void OnSoundWaveSet();
-	void DestroyAudioComponent();
-	void OnSoundWaveCleared();
 	void InitSoundMapEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, USoundMapAsset* InSoundMapAsset);
 	virtual void RegisterTabSpawners(const TSharedRef<FTabManager>& InTabManager) override;
 	virtual void UnregisterTabSpawners(const TSharedRef<FTabManager>& InTabManager) override;
@@ -30,14 +27,29 @@ public:
 
 	
 private:
+
+	// SoundMap
 	TObjectPtr<USoundMapAsset> SoundMap = nullptr;
+	void OnSoundWaveSet();
+	void OnSoundWaveCleared();
+
+	// AudioComponent
 	TObjectPtr<UAudioComponent> AudioComponent = nullptr;
+	void InitializeAudioComponent();
+	void DestroyAudioComponent();
 	
 	TSharedPtr<FSoundMapTransportController> TransportController;
-	
+
+	// Tab References
 	TSharedRef<SDockTab> SpawnTimelineTab(const FSpawnTabArgs& SpawnTabArgs);
-	TSharedRef<SDockTab> SpawnDetailsTab(const FSpawnTabArgs& SpawnTabArgs);
-	void InitializeAudioComponent();
+	TSharedRef<SDockTab> SpawnDetailsTab(const FSpawnTabArgs& SpawnTabArgs) const;
+
+	// Toolbar Setup
+	void RegisterToolbar();
+	bool CanPressPlayButton() const;
+	void BindCommands();
+	void UnbindCommands() const;
+
 
 	TSharedPtr<STimelineWidget> TimelineWidget;
 	

@@ -16,6 +16,10 @@ public class SoundMapEditor : ModuleRules
         PrivateDependencyModuleNames.AddRange(
             new string[]
             {
+                "Core",
+                "InputCore",
+                "DeveloperSettings",
+                "AssetRegistry",
                 "CoreUObject",
                 "Engine",
                 "Slate",
@@ -24,6 +28,8 @@ public class SoundMapEditor : ModuleRules
                 "AssetTools",
                 "UnrealEd",
                 "AudioWidgets",
+                "ToolMenus",
+                "EditorStyle"
             }
         );
     }
