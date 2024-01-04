@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FSoundMapTransportController.h"
 
 class STimelineWidget;
 class USoundMapAsset;
@@ -12,6 +13,9 @@ class USoundMapAsset;
 class SOUNDMAPEDITOR_API FSoundMapEditorToolkit : public FAssetEditorToolkit
 {
 public:
+	void OnSoundWaveSet();
+	void DestroyAudioComponent();
+	void OnSoundWaveCleared();
 	void InitSoundMapEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, USoundMapAsset* InSoundMapAsset);
 	virtual void RegisterTabSpawners(const TSharedRef<FTabManager>& InTabManager) override;
 	virtual void UnregisterTabSpawners(const TSharedRef<FTabManager>& InTabManager) override;
@@ -26,11 +30,15 @@ public:
 
 	
 private:
-	USoundMapAsset* SoundMap = nullptr;
+	TObjectPtr<USoundMapAsset> SoundMap = nullptr;
+	TObjectPtr<UAudioComponent> AudioComponent = nullptr;
+	
+	TSharedPtr<FSoundMapTransportController> TransportController;
 	
 	TSharedRef<SDockTab> SpawnTimelineTab(const FSpawnTabArgs& SpawnTabArgs);
 	TSharedRef<SDockTab> SpawnDetailsTab(const FSpawnTabArgs& SpawnTabArgs);
+	void InitializeAudioComponent();
 
 	TSharedPtr<STimelineWidget> TimelineWidget;
-		
+	
 };

@@ -9,7 +9,19 @@ void USoundMapAsset::PostEditChangeProperty(FPropertyChangedEvent& PropertyChang
 
 	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_CHECKED(USoundMapAsset, SoundWave))
 	{
-		UE_LOG(LogTemp, Display, TEXT("SoundWave changed!"));
+		if (SoundWave == nullptr)
+		{
+			UE_LOG(LogTemp, Display, TEXT("Soundwave cleared"));
+			OnSoundWaveCleared.Execute();
+		}
+
+		
+
+		if (SoundWave != nullptr)
+		{
+			UE_LOG(LogTemp, Display, TEXT("Soundwave Set"));
+			OnSoundWaveSet.Execute();
+		}
 	}
 	
 }

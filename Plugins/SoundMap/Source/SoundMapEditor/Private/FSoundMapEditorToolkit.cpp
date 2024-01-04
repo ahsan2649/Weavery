@@ -2,6 +2,9 @@
 
 
 #include "FSoundMapEditorToolkit.h"
+
+#include "AudioDevice.h"
+#include "AudioDeviceManager.h"
 #include "SoundMapAsset.h"
 #include "STimelineWidget.h"
 
@@ -30,11 +33,55 @@ TSharedRef<SDockTab> FSoundMapEditorToolkit::SpawnDetailsTab(const FSpawnTabArgs
 	];
 }
 
+void FSoundMapEditorToolkit::InitializeAudioComponent()
+{
+	if (AudioComponent == nullptr)
+	{
+		if (FAudioDeviceManager* AudioDeviceManager = FAudioDeviceManager::Get())
+		{
+			if (FAudioDevice* AudioDevice = AudioDeviceManager->GetMainAudioDeviceRaw())
+			{
+				USoundBase* SoundBase = Cast<USoundBase>(SoundMap->SoundWave);
+				AudioComponent = FAudioDevice::CreateComponent(SoundBase);
+			}
+		}
+	}
+
+	AudioComponent->bAutoDestroy = false;
+	AudioComponent->bIsUISound = true;
+	AudioComponent->bAllowSpatialization = false;
+	AudioComponent->bReverb = false;
+	AudioComponent->bCenterChannelOnly = false;
+	AudioComponent->bIsPreviewSound = true;
+}
+
+void FSoundMapEditorToolkit::OnSoundWaveSet()
+{
+	InitializeAudioComponent();
+	TransportController = MakeShared<FSoundMapTransportController>(AudioComponent);
+	TransportController->Play();
+}
+
+void FSoundMapEditorToolkit::DestroyAudioComponent()
+{
+	AudioComponent->DestroyComponent();
+	AudioComponent = nullptr;
+}
+
+void FSoundMapEditorToolkit::OnSoundWaveCleared()
+{
+	TransportController->Stop();
+	DestroyAudioComponent();
+	TransportController.Reset();
+}
+
 void FSoundMapEditorToolkit::InitSoundMapEditor(const EToolkitMode::Type Mode,
                                                 const TSharedPtr<IToolkitHost>& InitToolkitHost,
                                                 USoundMapAsset* InSoundMapAsset)
 {
 	SoundMap = InSoundMapAsset;
+	SoundMap->OnSoundWaveSet.BindSP(this, &FSoundMapEditorToolkit::OnSoundWaveSet);
+	SoundMap->OnSoundWaveCleared.BindSP(this, &FSoundMapEditorToolkit::OnSoundWaveCleared);
 	
 	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("StandaloneDefault")
 		->AddArea(

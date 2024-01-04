@@ -4,6 +4,7 @@
 #include "STimelineWidget.h"
 
 #include "SlateOptMacros.h"
+#include "SoundMapAsset.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
@@ -14,12 +15,7 @@ void STimelineWidget::Construct(const FArguments& InArgs)
 	SoundWave = InArgs._SoundWave;
 	
 	ChildSlot[
-		SNew(SVerticalBox)
-		+SVerticalBox::Slot().FillHeight(1)[SNew(STextBlock).Text(FText::FromString("Waveform goes here"))]
-		+SVerticalBox::Slot().FillHeight(2)[SNew(STextBlock).Text(FText::FromString("Rails go here"))]
+	SAssignNew(VerticalBox, SVerticalBox)
 		];
 }
-
-
-
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

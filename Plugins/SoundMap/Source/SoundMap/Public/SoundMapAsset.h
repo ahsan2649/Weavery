@@ -9,6 +9,9 @@
 /**
  * 
  */
+DECLARE_DELEGATE(FOnSoundWaveSet)
+DECLARE_DELEGATE(FOnSoundWaveCleared)
+
 USTRUCT()
 struct FRail
 {
@@ -28,5 +31,7 @@ public:
 	TArray<FRail> Rails;
 
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-
+	FOnSoundWaveSet OnSoundWaveSet;
+	FOnSoundWaveCleared OnSoundWaveCleared;
+	
 };

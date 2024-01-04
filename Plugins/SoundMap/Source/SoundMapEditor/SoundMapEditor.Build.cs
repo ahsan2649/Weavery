@@ -22,7 +22,8 @@ public class SoundMapEditor : ModuleRules
                 "SlateCore",
                 "SoundMap",
                 "AssetTools",
-                "UnrealEd"
+                "UnrealEd",
+                "AudioWidgets",
             }
         );
     }
