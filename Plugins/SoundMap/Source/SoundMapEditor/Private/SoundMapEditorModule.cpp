@@ -2,7 +2,7 @@
 
 #include "AssetToolsModule.h"
 #include "FAssetTypeActions_SoundMap.h"
-#include "FSoundMapEditorToolkit.h"
+#include "SoundMapEditor.h"
 #include "IAssetTools.h"
 #include "SoundMapEditorCommands.h"
 
@@ -39,7 +39,7 @@ void FSoundMapEditorModule::ShutdownModule()
 void FSoundMapEditorModule::CreateSoundMapEditor(const EToolkitMode::Type Mode,
     const TSharedPtr<IToolkitHost>& InitToolkitHost, USoundMapAsset* InSoundMapAsset)
 {
-    TSharedRef<FSoundMapEditorToolkit> SoundMapEditor(new FSoundMapEditorToolkit());
+    TSharedRef<FSoundMapEditor> SoundMapEditor(new FSoundMapEditor());
     SoundMapEditorPtr = SoundMapEditor;
     SoundMapEditor->InitSoundMapEditor(Mode, InitToolkitHost, InSoundMapAsset);
 }

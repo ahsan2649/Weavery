@@ -29,7 +29,9 @@ public class SoundMapEditor : ModuleRules
                 "UnrealEd",
                 "AudioWidgets",
                 "ToolMenus",
-                "EditorStyle"
+                "EditorStyle",
+                "WaveformEditorWidgets",
+                "WaveformEditor"
             }
         );
     }

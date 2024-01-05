@@ -4,7 +4,7 @@
 #include "Modules/ModuleManager.h"
 #include "AssetTypeCategories.h"
 
-class FSoundMapEditorToolkit;
+class FSoundMapEditor;
 class USoundMapAsset;
 class IAssetTypeActions;
 
@@ -19,5 +19,5 @@ public:
 private:
     EAssetTypeCategories::Type AssetTypeCategory;
     TSharedPtr<IAssetTypeActions> CreatedAssetTypeActions;
-    TWeakPtr<FSoundMapEditorToolkit> SoundMapEditorPtr;
+    TWeakPtr<FSoundMapEditor> SoundMapEditorPtr;
 };
